@@ -1,8 +1,12 @@
+#!/usr/bin/python3
+
+
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 import telegram
 import logging
 import os
+
 
 def start(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id, text="I am the new SysAd.. Just ask me!")
