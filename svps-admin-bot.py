@@ -3,6 +3,7 @@
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
+import configparser as cp
 import telegram
 import logging
 import os
@@ -29,7 +30,7 @@ def load(bot, update):
     msg = get_load()     
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
 
-def echo_id(bot, update):
+def echoid(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id, text=str(update.message.chat_id))
  
 
@@ -39,49 +40,40 @@ def get_sys_infos():
 
 def get_memory():
     tmp = "Memory Usage:\n"
-    tmp += os.popen("/home/andrea/myBins/myScripts/SystemUtils/MemUsage.sh").read()
+    tmp += os.popen("memusage").read()
     return tmp
 
 def get_disk():
     tmp = "Disk Usage:\n"
-    tmp += os.popen("/home/andrea/myBins/myScripts/SystemUtils/DiskSpace.sh").read()
+    tmp += os.popen("diskspace").read()
     return tmp
 
 def get_load():
     tmp = "Host Load:\n"
-    tmp += os.popen("/home/andrea/myBins/myScripts/SystemUtils/LoadAvg.sh").read()
+    tmp += os.popen("loadavg").read()
     return tmp
 
 if __name__ == "__main__":
 
+
+    config = cp.ConfigParser()
+    config.read("/root/.tbotrc") 
+    bot = telegram.Bot(config['AUTH']['API_TOKEN'])
+
+    commandHandlers = [start,status,mem,disk,load,echoid]
+
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
-    bot = telegram.Bot('372295283:AAHSC3-2zXvlQQx6r7HHVFBkhmdLeFG0-AU')
 
-    updater = Updater(bot=bot) #, token='372295283:AAHSC3-2zXvlQQx6r7HHVFBkhmdLeFG0-AU')
+    updater = Updater(bot=bot)
 
     dispatcher = updater.dispatcher
 
-    start_handler = CommandHandler('start', start)
-    dispatcher.add_handler(start_handler)
 
+    for f in commandHandlers:
+        dispatcher.add_handler(CommandHandler(f.__name__,f))
 
-    status_handler = CommandHandler('status',status)
-    dispatcher.add_handler(status_handler)
-
-    mem_status_handler = CommandHandler('mem',mem)
-    dispatcher.add_handler(mem_status_handler)
-
-    disk_status_handler = CommandHandler('disk',disk)
-    dispatcher.add_handler(disk_status_handler)
-
-    load_status_handler = CommandHandler('load',load)
-    dispatcher.add_handler(load_status_handler)
-    
-    echo_chat_id_handler = CommandHandler('echoid', echo_id)
-    dispatcher.add_handler(echo_chat_id_handler) 
-
-    #bot.sendMessage(chat_id=2992341,text="I am up!")
+    bot.sendMessage(chat_id=config['CHAT_IDS']['IDS'].split(",")[0],text="I am up!")
 
     updater.start_polling()
 
