@@ -32,7 +32,10 @@ def load(bot, update):
 
 def echoid(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id, text=str(update.message.chat_id))
- 
+
+def recentbcks(bot, update):
+    msg = get_recentbcks()
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
 
 def get_sys_infos():
     
@@ -53,6 +56,12 @@ def get_load():
     tmp += os.popen("loadavg").read()
     return tmp
 
+def get_recentbcks():
+    tmp = "Last Backups:\n"
+    tmp += os.popen("recentbcks").read()
+    return tmp
+
+
 if __name__ == "__main__":
 
 
@@ -60,7 +69,7 @@ if __name__ == "__main__":
     config.read("/root/.tbotrc") 
     bot = telegram.Bot(config['AUTH']['API_TOKEN'])
 
-    commandHandlers = [start,status,mem,disk,load,echoid]
+    commandHandlers = [start,status,mem,disk,load,echoid,recentbcks]
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
