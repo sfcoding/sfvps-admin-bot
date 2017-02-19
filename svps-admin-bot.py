@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-
+from functools import wraps
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 import configparser as cp
@@ -9,33 +9,56 @@ import logging
 import os
 
 
-def start(bot, update):
-    bot.sendMessage(chat_id=update.message.chat_id, text="I am the new SysAd.. Just ask me!")
 
-def status(bot, update):
-    msg = get_sys_infos()
+# Decorator function to handle authorizations
+def need_auth(func):
+    @wraps(func)
+    def check(bot,update, *args,**kwargs):
+        if not update.message.chat_id in wlist :
+            return noAuth(bot,update)
+        else:
+            return func(bot,update)
+
+    return check
+
+
+def noAuth(bot,update):
+    sendmsg(bot,update,"YOU ARE NOT AUTHORIZED!")
+        
+def sendmsg(bot,update,msg):
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
 
+def start(bot, update):
+    sendmsg(bot,update,"I am the new SysAd.. Just ask me!")
 
+@need_auth
+def status(bot, update):
+    sendmsg(bot,update,get_sys_infos())
+
+@need_auth
 def mem(bot, update):
     msg = get_memory()
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+    sendmsg(bot,update,msg)
 
+@need_auth
 def disk(bot, update):
     msg = get_disk()
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+    sendmsg(bot,update,msg)
 
 
+@need_auth
 def load(bot, update):
     msg = get_load()     
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+    sendmsg(bot,update,msg)
 
 def echoid(bot, update):
-    bot.sendMessage(chat_id=update.message.chat_id, text=str(update.message.chat_id))
+    msg = str(update.message.chat_id)
+    sendmsg(bot,update,msg)
 
+@need_auth
 def recentbcks(bot, update):
     msg = get_recentbcks()
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+    sendmsg(bot,update,msg)
 
 def get_sys_infos():
     
@@ -73,17 +96,22 @@ if __name__ == "__main__":
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
-
     updater = Updater(bot=bot)
 
     dispatcher = updater.dispatcher
 
-
     for f in commandHandlers:
         dispatcher.add_handler(CommandHandler(f.__name__,f))
 
-    bot.sendMessage(chat_id=config['CHAT_IDS']['IDS'].split(",")[0],text="I am up!")
+    wlist = set()
 
-    updater.start_polling()
+    for wID in config['WHITE_LIST_IDS'].values():
+        wlist.add(int(wID))
 
-    
+    print ("[ LOG ] Wlist: "+str(wlist))
+
+    bot.sendMessage(chat_id=config['ADMIN_CHAT_IDS']['IDS'].split(",")[0],text="I am up!")
+
+    print ("[ LOG ] Start Polling")
+    updater.start_polling(poll_interval=3,bootstrap_retries=-1)
+ 
