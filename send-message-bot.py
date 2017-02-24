@@ -29,7 +29,7 @@ def main(args):
     msg = args.pop()
         
     if(len(args)==0):
-        args = config['CHAT_IDS']['IDS'].split(",")
+        args = config['ADMIN_CHAT_IDS']['IDS'].split(",")
 
     bot = telegram.Bot(config['AUTH']['API_TOKEN'])
 
