@@ -81,7 +81,7 @@ def get_load():
 
 def get_recentbcks():
     tmp = "Last Backups:\n"
-    tmp += "`"+os.popen("recentbcks").read()+"`"
+    tmp += os.popen("recentbcks").read()
     return tmp
 
 
