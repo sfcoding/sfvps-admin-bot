@@ -1,0 +1,1 @@
+sudo zdaemon -p "python3 svps-admin-bot.py" -z $(pwd) -d
