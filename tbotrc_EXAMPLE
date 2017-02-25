@@ -1,0 +1,11 @@
+[AUTH]
+API_TOKEN:your-API-key-here
+
+[ADMIN_CHAT_IDS]
+IDS:3783271
+
+[WHITE_LIST_IDS]
+LUCA:1234987
+ANDREA:9876532
+SCACCIA:23876523
+;SFVPS:? <---- this is a commented line
