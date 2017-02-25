@@ -10,6 +10,8 @@ import os
 
 
 
+
+
 # Decorator function to handle authorizations
 def need_auth(func):
     @wraps(func)
@@ -22,9 +24,10 @@ def need_auth(func):
     return check
 
 
+# Handles non authorized user requests
 def noAuth(bot,update):
     sendmsg(bot,update,"YOU ARE NOT AUTHORIZED!")
-        
+
 def sendmsg(bot,update,msg):
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
 

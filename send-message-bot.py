@@ -47,6 +47,7 @@ if __name__ == "__main__":
 
 
 #
+#
 #   The configuration file has to be placed at: "/root/.tbotrc"
 #   the file have to be compliant to the .ini standard 
 #       
@@ -55,12 +56,17 @@ if __name__ == "__main__":
 #
 #       e.g.: 
 #
-#           ; this is a config file and this is a comment
-#           [AUTH]
-#           API_TOKEN:YourBotApiToken 
-#       
-#           [CHAT_IDS]
-#           IDS:273371,5678899
+#       [AUTH]
+#       API_TOKEN:your-API-key-here
+#
+#       [ADMIN_CHAT_IDS]
+#       IDS:3783271,30898130
+#
+#       [WHITE_LIST_IDS]
+#       LUCA:1234987
+#       ANDREA:9876532
+#       SCACCIA:23876523
+#       ;SFVPS:? <---- this is a commented line
 #
 #
 
