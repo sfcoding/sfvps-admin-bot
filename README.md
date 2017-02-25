@@ -1,7 +1,15 @@
-# sfvps-admin-bot
+sfvps-admin-bot
 
 Simple Telegram-Bot for system info.
 
+**Author:** Andrea Galloni ([Twitter](https://twitter.com/andreagalloni92))
+
+**E-Mail:** andrea [dooottt] galloni [aaattt] studenti [doott] unitn [ddott] it
+
+**Licence:** [No Licence](https://choosealicense.com/no-license/)
+
+**Warranty:** No Warranty
+ 
 ---
 <p align="center"><br/></p>
 <p align="center">
