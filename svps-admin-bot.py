@@ -29,6 +29,9 @@ def noAuth(bot,update):
     sendmsg(bot,update,"YOU ARE NOT AUTHORIZED!")
 
 def sendmsg(bot,update,msg):
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+
+def sendmsg_with_key(bot,update,msg):
     keyboard = [[KeyboardButton("/disk"),\
     KeyboardButton("/mem")],\
     [KeyboardButton("/load"),\
@@ -36,7 +39,9 @@ def sendmsg(bot,update,msg):
 
     reply_markup = ReplyKeyboardMarkup(keyboard)
 
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg,reply_markup=reply_markup, one_time_keyboard=True)
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=reply_markup, one_time_keyboard=True)
+
+
 
 def start(bot, update):
     sendmsg(bot,update,"I am the new SysAd.. Just ask me!")
@@ -63,7 +68,7 @@ def load(bot, update):
 
 def echoid(bot, update):
     msg = str(update.message.chat_id)
-    sendmsg(bot,update,msg)
+    sendmsg_with_key(bot,update,msg)
 
 @need_auth
 def recentbcks(bot, update):
