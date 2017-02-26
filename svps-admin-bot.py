@@ -3,14 +3,14 @@
 from functools import wraps
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
+from telegram.ext import CallbackQueryHandler
 import configparser as cp
 import telegram
 import logging
 import os
 
-
-
-
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import KeyboardButton, ReplyKeyboardMarkup 
 
 # Decorator function to handle authorizations
 def need_auth(func):
@@ -29,7 +29,14 @@ def noAuth(bot,update):
     sendmsg(bot,update,"YOU ARE NOT AUTHORIZED!")
 
 def sendmsg(bot,update,msg):
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+    keyboard = [[KeyboardButton("/disk"),\
+    KeyboardButton("/mem")],\
+    [KeyboardButton("/load"),\
+    KeyboardButton("/recentbcks")]]
+
+    reply_markup = ReplyKeyboardMarkup(keyboard)
+
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg,reply_markup=reply_markup, one_time_keyboard=True)
 
 def start(bot, update):
     sendmsg(bot,update,"I am the new SysAd.. Just ask me!")
@@ -87,6 +94,12 @@ def get_recentbcks():
     tmp += os.popen("recentbcks").read()
     return tmp
 
+def button(bot,update):
+    query = update.callback_query
+    bot.sendMessage(text="Selected option: %s" % query.data,
+    chat_id=query.message.chat_id,
+    message_id=query.message.message_id)
+
 
 if __name__ == "__main__":
 
@@ -105,6 +118,9 @@ if __name__ == "__main__":
 
     for f in commandHandlers:
         dispatcher.add_handler(CommandHandler(f.__name__,f))
+
+    updater.dispatcher.add_handler(CallbackQueryHandler(button))
+
 
     wlist = set()
 
