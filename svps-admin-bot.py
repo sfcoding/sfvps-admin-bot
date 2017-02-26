@@ -10,7 +10,7 @@ import logging
 import os
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram import KeyboardButton, ReplyKeyboardMarkup 
+from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove 
 
 # Decorator function to handle authorizations
 def need_auth(func):
@@ -29,7 +29,7 @@ def noAuth(bot,update):
     sendmsg(bot,update,"YOU ARE NOT AUTHORIZED!")
 
 def sendmsg(bot,update,msg):
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=ReplyKeyboardRemove())
 
 def sendmsg_with_key(bot,update,msg):
     keyboard = [[KeyboardButton("/disk"),\
@@ -68,12 +68,18 @@ def load(bot, update):
 
 def echoid(bot, update):
     msg = str(update.message.chat_id)
-    sendmsg_with_key(bot,update,msg)
+    sendmsg(bot,update,msg)
 
 @need_auth
 def recentbcks(bot, update):
     msg = get_recentbcks()
     sendmsg(bot,update,msg)
+
+@need_auth
+def sysad(bot, update):
+    msg = "Ask Me! :) " 
+    sendmsg_with_key(bot,update,msg)
+
 
 def get_sys_infos():
     
@@ -113,7 +119,7 @@ if __name__ == "__main__":
     config.read("/root/.tbotrc") 
     bot = telegram.Bot(config['AUTH']['API_TOKEN'])
 
-    commandHandlers = [start,status,mem,disk,load,echoid,recentbcks]
+    commandHandlers = [start,status,mem,disk,load,echoid,recentbcks,sysad]
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
