@@ -28,7 +28,11 @@ Thanks to [python-telegram-bot](https://github.com/python-telegram-bot/python-te
 ## Commands
 
 `/mem` RAM stats.
+
 `/disk` Hard-Disk stats.
+
 `/load` Load Average.
+
 `/recentbcks` Last 3 backups of the host.
+
 `/echoid` Telegram Chat-Id for permissions grants.
