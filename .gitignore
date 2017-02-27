@@ -1,3 +1,4 @@
 zdsock
 *.pyc
 *.boh
+.tbotrc
