@@ -3,7 +3,6 @@
 from functools import wraps
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from telegram.ext import CallbackQueryHandler
 import configparser as cp
 import telegram
 import logging
@@ -105,12 +104,6 @@ def get_recentbcks():
     tmp += os.popen("recentbcks").read()
     return tmp
 
-def button(bot,update):
-    query = update.callback_query
-    bot.sendMessage(text="Selected option: %s" % query.data,
-    chat_id=query.message.chat_id,
-    message_id=query.message.message_id)
-
 
 if __name__ == "__main__":
 
@@ -129,8 +122,6 @@ if __name__ == "__main__":
 
     for f in commandHandlers:
         dispatcher.add_handler(CommandHandler(f.__name__,f))
-
-    updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 
     wlist = set()
