@@ -27,8 +27,8 @@ def need_auth(func):
 def noAuth(bot,update):
     sendmsg(bot,update,"YOU ARE NOT AUTHORIZED!")
 
-def sendmsg(bot,update,msg):
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=ReplyKeyboardRemove())
+def sendmsg(bot,update,msg,parse_mode=None):
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=ReplyKeyboardRemove(),parse_mode=parse_mode)
 
 def sendmsg_with_key(bot,update,msg):
     keyboard = [[KeyboardButton("/disk"),\
@@ -37,8 +37,8 @@ def sendmsg_with_key(bot,update,msg):
     KeyboardButton("/recentbcks")]]
     
     reply_markup = ReplyKeyboardMarkup(keyboard)
-
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=reply_markup, one_time_keyboard=True, parse_mode="Markdown")
+    print ("Here I AM! \n")
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=reply_markup, one_time_keyboard=True)
 
 
 
@@ -47,23 +47,23 @@ def start(bot, update):
 
 @need_auth
 def status(bot, update):
-    sendmsg(bot,update,get_sys_infos())
+    sendmsg(bot,update,get_sys_infos(),parse_mode="Markdown")
 
 @need_auth
 def mem(bot, update):
     msg = get_memory()
-    sendmsg(bot,update,msg)
+    sendmsg(bot,update,msg,parse_mode="Markdown")
 
 @need_auth
 def disk(bot, update):
     msg = get_disk()
-    sendmsg(bot,update,msg)
+    sendmsg(bot,update,msg,parse_mode="Markdown")
 
 
 @need_auth
 def load(bot, update):
     msg = get_load()     
-    sendmsg(bot,update,msg)
+    sendmsg(bot,update,msg,parse_mode="Markdown")
 
 def echoid(bot, update):
     msg = str(update.message.chat_id)
@@ -72,7 +72,7 @@ def echoid(bot, update):
 @need_auth
 def recentbcks(bot, update):
     msg = get_recentbcks()
-    sendmsg(bot,update,msg)
+    sendmsg(bot,update,msg,parse_mode="Markdown")
 
 @need_auth
 def sysad(bot, update):
@@ -85,22 +85,22 @@ def get_sys_infos():
     return get_memory() +"\n"+ get_disk() + "\n" + get_load()
 
 def get_memory():
-    tmp = "Memory Usage:\n"
+    tmp = "*Memory Usage:*\n"
     tmp += os.popen("memusage").read()
     return tmp
 
 def get_disk():
-    tmp = "Disk Usage:\n"
+    tmp = "*Disk Usage:*\n"
     tmp += os.popen("diskspace").read()
     return tmp
 
 def get_load():
-    tmp = "Host Load:\n"
+    tmp = "*Host Load:*\n"
     tmp += os.popen("loadavg").read()
     return tmp
 
 def get_recentbcks():
-    tmp = "Last Backups:\n"
+    tmp = "*Last Backups:*\n"
     tmp += os.popen("recentbcks").read()
     return tmp
 

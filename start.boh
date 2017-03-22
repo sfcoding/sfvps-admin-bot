@@ -1,1 +1,2 @@
-sudo zdaemon -p "python3 svps-admin-bot.py" -z $(pwd) -d
+#sudo zdaemon -p "python3 svps-admin-bot.py" -z $(pwd) -d
+#sudo zdaemon -p "python3 svps-admin-bot.py >> /dev/null" -z (pwd) -d
