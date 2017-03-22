@@ -35,10 +35,10 @@ def sendmsg_with_key(bot,update,msg):
     KeyboardButton("/mem")],\
     [KeyboardButton("/load"),\
     KeyboardButton("/recentbcks")]]
-
+    
     reply_markup = ReplyKeyboardMarkup(keyboard)
 
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=reply_markup, one_time_keyboard=True)
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=reply_markup, one_time_keyboard=True, parse_mode="Markdown")
 
 
 
